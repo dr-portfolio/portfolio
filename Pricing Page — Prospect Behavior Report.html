@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<!-- saved from url=(0084)https://github.intuit.com/pages/drocha/reports/fullstory/pricing-page-prospects.html -->
+<html lang="en" data-theme="dark"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing Page — Prospect Behavior Report</title>
+<script src="./Pricing Page — Prospect Behavior Report_files/chart.umd.min.js"></script>
+<style>
+  :root {
+    --mc-bg: #0f1117;
+    --mc-surface: #1a1d27;
+    --mc-surface-2: #232734;
+    --mc-border: #2e3345;
+    --mc-text: #e4e7ef;
+    --mc-text-muted: #8b8fa7;
+    --mc-accent: #FFE01B;
+    --mc-accent-hover: #E5C900;
+    --mc-accent-text: #241C15;
+    --mc-accent-subtle: rgba(255,224,27,.10);
+    --mc-highlight: #6366f1;
+    --mc-positive: #22c55e;
+    --mc-positive-bg: rgba(34,197,94,.12);
+    --mc-negative: #ef4444;
+    --mc-negative-bg: rgba(239,68,68,.12);
+    --mc-amber: #f59e0b;
+    --mc-amber-bg: rgba(245,158,11,.12);
+    --mc-blue: #3b82f6;
+    --mc-teal: #14b8a6;
+    --mc-purple: #a855f7;
+    --mc-radius: 12px;
+    --mc-radius-sm: 8px;
+    --mc-card-padding: 20px;
+    --mc-gap: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--mc-bg);
+    color: var(--mc-text);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--mc-surface);
+    border-bottom: 1px solid var(--mc-border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-badge {
+    background: var(--mc-accent);
+    color: var(--mc-accent-text);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .header-title { font-size: 17px; font-weight: 700; color: var(--mc-text); }
+  .header-meta { font-size: 12px; color: var(--mc-text-muted); }
+
+  /* ── Layout ── */
+  .page { max-width: 1320px; margin: 0 auto; padding: 32px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--mc-accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--mc-border);
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--mc-text);
+    margin-bottom: 6px;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--mc-text-muted);
+    margin-bottom: 24px;
+  }
+
+  /* ── Device tabs ── */
+  .device-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .device-tab {
+    padding: 8px 20px;
+    border-radius: var(--mc-radius-sm);
+    border: 1px solid var(--mc-border);
+    background: transparent;
+    color: var(--mc-text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .device-tab.active {
+    background: var(--mc-accent);
+    color: var(--mc-accent-text);
+    border-color: var(--mc-accent);
+  }
+  .device-tab:hover:not(.active) {
+    border-color: var(--mc-accent);
+    color: var(--mc-text);
+  }
+
+  .device-panel { display: none; }
+  .device-panel.active { display: block; }
+
+  /* ── KPI row ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--mc-gap);
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--mc-surface);
+    border: 1px solid var(--mc-border);
+    border-radius: var(--mc-radius);
+    padding: var(--mc-card-padding);
+    transition: border-color .15s;
+  }
+  .kpi-card:hover { border-color: var(--mc-accent); }
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--mc-text-muted);
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--mc-text);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .kpi-value.accent { color: var(--mc-accent); }
+  .kpi-value.amber  { color: var(--mc-amber); }
+  .kpi-value.teal   { color: var(--mc-teal); }
+  .kpi-sub {
+    font-size: 12px;
+    color: var(--mc-text-muted);
+    margin-top: 4px;
+  }
+  .kpi-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 6px;
+  }
+  .badge-warn { background: var(--mc-amber-bg); color: var(--mc-amber); border: 1px solid rgba(245,158,11,.25); }
+  .badge-neg  { background: var(--mc-negative-bg); color: var(--mc-negative); border: 1px solid rgba(239,68,68,.25); }
+  .badge-ok   { background: var(--mc-positive-bg); color: var(--mc-positive); border: 1px solid rgba(34,197,94,.25); }
+
+  /* ── Cards grid ── */
+  .cards-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--mc-gap);
+    margin-bottom: 28px;
+  }
+  .card {
+    background: var(--mc-surface);
+    border: 1px solid var(--mc-border);
+    border-radius: var(--mc-radius);
+    padding: var(--mc-card-padding);
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--mc-text);
+    margin-bottom: 4px;
+  }
+  .card-sub {
+    font-size: 12px;
+    color: var(--mc-text-muted);
+    margin-bottom: 16px;
+  }
+
+  /* ── Scroll heatmap visual ── */
+  .scroll-viz {
+    position: relative;
+    background: var(--mc-surface-2);
+    border-radius: var(--mc-radius-sm);
+    overflow: hidden;
+    height: 200px;
+    margin-bottom: 12px;
+  }
+  .scroll-bar {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 0;
+    transition: height .6s ease;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 10px;
+    justify-content: center;
+  }
+  .scroll-bar-label {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--mc-accent-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .scroll-zones {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+  }
+  .scroll-zone {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,.5);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    position: relative;
+  }
+  .scroll-zone-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  /* ── Opportunity cards ── */
+  .opp-list { display: flex; flex-direction: column; gap: 12px; }
+  .opp-card {
+    background: var(--mc-surface-2);
+    border: 1px solid var(--mc-border);
+    border-left: 3px solid var(--mc-amber);
+    border-radius: var(--mc-radius-sm);
+    padding: 14px 16px;
+  }
+  .opp-card.critical { border-left-color: var(--mc-negative); }
+  .opp-card.info     { border-left-color: var(--mc-blue); }
+  .opp-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .opp-title { font-size: 13px; font-weight: 700; color: var(--mc-text); }
+  .opp-users {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--mc-text-muted);
+    white-space: nowrap;
+    background: var(--mc-surface);
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid var(--mc-border);
+  }
+  .opp-desc { font-size: 12px; color: var(--mc-text-muted); line-height: 1.5; margin-bottom: 8px; }
+  .opp-hypothesis {
+    font-size: 12px;
+    color: var(--mc-accent);
+    font-weight: 600;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .opp-hypothesis::before { content: '💡'; font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Sessions ── */
+  .session-list { display: flex; flex-direction: column; gap: 8px; }
+  .session-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--mc-surface-2);
+    border: 1px solid var(--mc-border);
+    border-radius: var(--mc-radius-sm);
+    color: var(--mc-text);
+    text-decoration: none;
+    font-size: 12px;
+    transition: border-color .15s, background .15s;
+  }
+  .session-link:hover { border-color: var(--mc-accent); background: var(--mc-accent-subtle); }
+  .session-icon { font-size: 14px; }
+  .session-id { font-variant-numeric: tabular-nums; color: var(--mc-text-muted); font-size: 11px; flex: 1; }
+  .session-arrow { color: var(--mc-text-muted); margin-left: auto; }
+
+  /* ── Prototype wireframes ── */
+  .proto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--mc-gap);
+    margin-bottom: 28px;
+  }
+  .proto-card {
+    background: var(--mc-surface);
+    border: 1px solid var(--mc-border);
+    border-radius: var(--mc-radius);
+    padding: var(--mc-card-padding);
+  }
+  .proto-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 4px;
+  }
+  .proto-label.current  { color: var(--mc-negative); }
+  .proto-label.proposed { color: var(--mc-positive); }
+  .proto-desc { font-size: 12px; color: var(--mc-text-muted); margin-bottom: 14px; }
+  .wireframe {
+    background: var(--mc-surface-2);
+    border: 1px solid var(--mc-border);
+    border-radius: var(--mc-radius-sm);
+    padding: 16px;
+    font-size: 11px;
+    color: var(--mc-text-muted);
+    min-height: 220px;
+    position: relative;
+  }
+
+  /* wireframe elements */
+  .wf-nav {
+    height: 28px; background: rgba(255,255,255,.06);
+    border-radius: 4px; margin-bottom: 12px;
+    display: flex; align-items: center; padding: 0 8px; gap: 8px;
+  }
+  .wf-nav-dot { width: 28px; height: 8px; background: rgba(255,255,255,.12); border-radius: 2px; }
+  .wf-nav-dot.accent { background: var(--mc-accent); opacity: .4; width: 48px; }
+  .wf-hero {
+    background: rgba(255,255,255,.04); border-radius: 6px;
+    padding: 12px; margin-bottom: 10px; text-align: center;
+  }
+  .wf-h1 { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+  .wf-sub { font-size: 10px; color: rgba(255,255,255,.25); margin-bottom: 10px; }
+  .wf-cta {
+    display: inline-block; padding: 6px 16px; border-radius: 4px;
+    font-size: 10px; font-weight: 700;
+  }
+  .wf-cta.yellow { background: var(--mc-accent); color: var(--mc-accent-text); }
+  .wf-cta.ghost  { border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.4); }
+  .wf-plans {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 10px;
+  }
+  .wf-plan {
+    background: rgba(255,255,255,.04); border-radius: 4px; padding: 8px 6px; text-align: center;
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .wf-plan.highlight { border-color: var(--mc-accent); background: var(--mc-accent-subtle); }
+  .wf-plan-name { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.5); margin-bottom: 4px; }
+  .wf-plan-price { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.7); margin-bottom: 6px; }
+  .wf-plan-btn { font-size: 8px; color: rgba(255,255,255,.3); }
+  .wf-plan.highlight .wf-plan-btn { color: var(--mc-accent); font-weight: 700; }
+  .wf-sticky {
+    position: absolute; bottom: 10px; left: 10px; right: 10px;
+    background: rgba(255,224,27,.15); border: 1px solid rgba(255,224,27,.3);
+    border-radius: 6px; padding: 8px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wf-sticky-text { font-size: 10px; color: rgba(255,224,27,.8); }
+  .wf-sticky-btn {
+    background: var(--mc-accent); color: var(--mc-accent-text);
+    font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 4px;
+  }
+  .wf-trust {
+    display: flex; gap: 6px; margin-bottom: 10px;
+  }
+  .wf-trust-item {
+    flex: 1; background: rgba(255,255,255,.04); border-radius: 4px;
+    padding: 6px; text-align: center; font-size: 9px; color: rgba(255,255,255,.3);
+  }
+  .wf-toggle {
+    background: rgba(255,255,255,.04); border-radius: 4px; padding: 8px;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .wf-toggle-track {
+    width: 32px; height: 14px; background: var(--mc-accent); border-radius: 7px;
+    position: relative;
+  }
+  .wf-toggle-thumb {
+    width: 10px; height: 10px; background: var(--mc-accent-text);
+    border-radius: 50%; position: absolute; top: 2px; right: 2px;
+  }
+  .wf-toggle-label { font-size: 10px; color: rgba(255,255,255,.5); }
+  .wf-social {
+    background: rgba(255,255,255,.04); border-radius: 4px; padding: 8px;
+    margin-bottom: 10px; font-size: 10px; color: rgba(255,255,255,.3);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .wf-avatar { width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,.15); }
+  .wf-scroll-indicator {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .wf-scroll-pip { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.1); }
+  .wf-scroll-pip.active { background: var(--mc-accent); }
+  .wf-mobile-cta {
+    position: absolute; bottom: 10px; left: 10px; right: 10px;
+    background: var(--mc-accent); color: var(--mc-accent-text);
+    border-radius: 6px; padding: 10px; text-align: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .wf-mobile-plans {
+    display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;
+  }
+  .wf-mobile-plan {
+    background: rgba(255,255,255,.04); border-radius: 4px; padding: 8px 10px;
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .wf-mobile-plan.highlight { border-color: var(--mc-accent); }
+  .wf-annotation {
+    position: absolute; top: 8px; right: 8px;
+    background: var(--mc-negative-bg); border: 1px solid rgba(239,68,68,.3);
+    border-radius: 4px; padding: 2px 6px;
+    font-size: 9px; color: var(--mc-negative); font-weight: 700;
+  }
+  .wf-annotation.ok {
+    background: var(--mc-positive-bg); border-color: rgba(34,197,94,.3);
+    color: var(--mc-positive);
+  }
+
+  /* ── Callout ── */
+  .callout {
+    background: var(--mc-accent-subtle);
+    border: 1px solid rgba(255,224,27,.2);
+    border-left: 3px solid var(--mc-accent);
+    border-radius: var(--mc-radius-sm);
+    padding: 14px 16px;
+    margin-bottom: 28px;
+  }
+  .callout-title { font-size: 13px; font-weight: 700; color: var(--mc-accent); margin-bottom: 4px; }
+  .callout-body  { font-size: 13px; color: var(--mc-text); line-height: 1.6; }
+
+  /* ── Divider ── */
+  .divider { height: 1px; background: var(--mc-border); margin: 36px 0; }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 1px solid var(--mc-border);
+    padding: 20px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--mc-text-muted);
+  }
+  .footer a { color: var(--mc-accent); text-decoration: none; }
+
+  @media (max-width: 900px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .cards-2, .proto-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+  <div class="header-left">
+    <span class="header-badge">FullStory</span>
+    <span class="header-title">Pricing Page — Prospect Behavior Report</span>
+  </div>
+  <span class="header-meta">mailchimp.com/pricing · Past 60 days · Prospects only</span>
+</header>
+
+<main class="page">
+
+  <!-- ── Executive Summary ── -->
+  <div class="callout">
+    <div class="callout-title">Key Finding</div>
+    <div class="callout-body">
+      Desktop prospects scroll only <strong>43%</strong> down the pricing page — meaning the majority never reach the plan comparison table, the most conversion-critical section of the page. Mobile prospects face even more friction: FullStory has flagged layout shifts after page refresh and a JS error that triggers a full page reload for visitors arriving from social ads. Combined, these issues create a strong case for three experiments: a sticky CTA bar, a condensed mobile plan selector, and a hero-section trust-signal module to reduce early abandonment.
+    </div>
+  </div>
+
+  <!-- ── Device Tabs ── -->
+  <div class="device-tabs">
+    <button class="device-tab active" onclick="switchTab(&#39;desktop&#39;, this)">🖥 Desktop</button>
+    <button class="device-tab" onclick="switchTab(&#39;mobile&#39;, this)">📱 Mobile</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       DESKTOP PANEL
+  ══════════════════════════════════════════ -->
+  <div class="device-panel active" id="panel-desktop">
+
+    <div class="section-label">Desktop Prospects · Past 60 Days</div>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Median Scroll Depth</div>
+        <div class="kpi-value accent">43%</div>
+        <div class="kpi-sub">Half of prospects leave before the plan table</div>
+        <span class="kpi-badge badge-warn">⚠ Below fold threshold</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Rage Clicks (60d)</div>
+        <div class="kpi-value amber">53</div>
+        <div class="kpi-sub">Unique users experiencing frustration</div>
+        <span class="kpi-badge badge-warn">Metrics endpoint 403s</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Dead Clicks (60d)</div>
+        <div class="kpi-value">—</div>
+        <div class="kpi-sub">No dead clicks detected in segment</div>
+        <span class="kpi-badge badge-ok">✓ Clean interaction layer</span>
+      </div>
+    </div>
+
+    <!-- Scroll Depth Viz + Opportunities -->
+    <div class="cards-2">
+
+      <!-- Scroll depth visual -->
+      <div class="card">
+        <div class="card-title">Where Do Desktop Prospects Stop Scrolling?</div>
+        <div class="card-sub">Median reach: 43% — content below this line is invisible to most visitors</div>
+        <div class="scroll-viz">
+          <div class="scroll-zones">
+            <div class="scroll-zone">
+              <div class="scroll-zone-dot" style="background:#22c55e"></div>
+              0–25% · Hero + headline
+            </div>
+            <div class="scroll-zone">
+              <div class="scroll-zone-dot" style="background:#f59e0b"></div>
+              25–50% · Feature highlights
+            </div>
+            <div class="scroll-zone" style="background: rgba(239,68,68,.06);">
+              <div class="scroll-zone-dot" style="background:#ef4444"></div>
+              50–75% · <strong style="color:#ef4444">Plan table ← most prospects don't reach here</strong>
+            </div>
+            <div class="scroll-zone" style="opacity:.4;">
+              <div class="scroll-zone-dot" style="background:#8b8fa7"></div>
+              75–100% · FAQs + footer
+            </div>
+          </div>
+          <!-- Fill bar showing 43% reach from bottom -->
+          <div class="scroll-bar" style="height:43%; background: linear-gradient(to top, rgba(255,224,27,.35), rgba(255,224,27,.05));">
+            <span class="scroll-bar-label">43%</span>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mc-text-muted);">
+          The plan comparison table — the primary conversion trigger — sits below the median scroll point. Most desktop prospects are making decisions (or bouncing) based only on the hero and feature highlights.
+        </p>
+      </div>
+
+      <!-- Desktop opportunities -->
+      <div class="card">
+        <div class="card-title">FullStory Opportunities — Desktop</div>
+        <div class="card-sub">Friction points flagged by StoryAI in the past 30 days</div>
+        <div class="opp-list">
+          <div class="opp-card critical">
+            <div class="opp-header">
+              <div class="opp-title">Layout Shifts After Refresh on Pricing Page</div>
+              <div class="opp-users">83 users</div>
+            </div>
+            <div class="opp-desc">Prospects experience cumulative layout shift (CLS) after reloading the pricing page. One user hit a 406 error mid-signup flow.</div>
+            <div class="opp-hypothesis">Run an experiment pinning plan card heights to eliminate CLS and reduce refresh-triggered abandonment.</div>
+          </div>
+          <div class="opp-card">
+            <div class="opp-header">
+              <div class="opp-title">Intermittent 403s on Metrics Endpoint</div>
+              <div class="opp-users">53 users</div>
+            </div>
+            <div class="opp-desc">POST requests to <code>/metrics/ag/g/c</code> fail with 403 errors. Some users also see failures on <code>/forms/pricing/</code> GET requests.</div>
+            <div class="opp-hypothesis">Investigate the analytics/metrics endpoint auth config — these silent errors may be suppressing pricing interaction data in downstream reporting.</div>
+          </div>
+          <div class="opp-card info">
+            <div class="opp-header">
+              <div class="opp-title">Intermittent Page Load Errors</div>
+              <div class="opp-users">111 users</div>
+            </div>
+            <div class="opp-desc">GTM collect errors and uncaught JS exceptions causing interaction latency across Mailchimp pages, including pricing.</div>
+            <div class="opp-hypothesis">Audit GTM tag firing order on the pricing page — a blocked tag may be delaying page interactivity and inflating bounce rate.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Sessions -->
+    <div class="card" style="margin-bottom:28px;">
+      <div class="card-title">Desktop Session Replays</div>
+      <div class="card-sub" style="margin-bottom:14px;">5 sample prospect sessions on the pricing page — watch how real visitors behave</div>
+      <div class="session-list">
+        <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/5178886203535488624:2406451087974984651?utm_source=fullstory-mcp" target="_blank">
+          <span class="session-icon">▶</span>
+          <span>Session 1 — Desktop Prospect</span>
+          <span class="session-id">5178886203535488624:2406451087974984651</span>
+          <span class="session-arrow">→</span>
+        </a>
+        <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/3666681543371780931:7322761762188019673?utm_source=fullstory-mcp" target="_blank">
+          <span class="session-icon">▶</span>
+          <span>Session 2 — Desktop Prospect</span>
+          <span class="session-id">3666681543371780931:7322761762188019673</span>
+          <span class="session-arrow">→</span>
+        </a>
+        <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/4811273208760804393:3548057048524832350?utm_source=fullstory-mcp" target="_blank">
+          <span class="session-icon">▶</span>
+          <span>Session 3 — Desktop Prospect</span>
+          <span class="session-id">4811273208760804393:3548057048524832350</span>
+          <span class="session-arrow">→</span>
+        </a>
+        <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/383930331516005245:5399200450407842261?utm_source=fullstory-mcp" target="_blank">
+          <span class="session-icon">▶</span>
+          <span>Session 4 — Desktop Prospect</span>
+          <span class="session-id">383930331516005245:5399200450407842261</span>
+          <span class="session-arrow">→</span>
+        </a>
+        <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/1804474353237135957:7016238312292573222?utm_source=fullstory-mcp" target="_blank">
+          <span class="session-icon">▶</span>
+          <span>Session 5 — Desktop Prospect</span>
+          <span class="session-id">1804474353237135957:7016238312292573222</span>
+          <span class="session-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Desktop Prototypes -->
+    <div class="section-label">Desktop — Prototype Opportunities</div>
+    <div class="section-title">3 Design Changes to Drive More Signups</div>
+    <div class="section-subtitle">Each prototype targets the specific friction point identified in the data above.</div>
+
+    <div class="proto-grid">
+
+      <!-- Prototype 1: Sticky CTA -->
+      <div class="proto-card">
+        <div class="proto-label proposed">Opportunity 1 — Sticky CTA Bar</div>
+        <div class="proto-desc">Since 57% of prospects never reach the plan table, a sticky "Start for free" bar keeps the primary CTA visible at all scroll depths.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <p style="font-size:10px;color:var(--mc-negative);font-weight:700;margin-bottom:6px;">CURRENT — No persistent CTA</p>
+            <div class="wireframe">
+              <div class="wf-annotation">CTA out of view</div>
+              <div class="wf-nav">
+                <div class="wf-nav-dot"></div><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div>
+              </div>
+              <div class="wf-hero">
+                <div class="wf-h1">Pricing</div>
+                <div class="wf-sub">Find the right plan for you</div>
+                <div class="wf-cta yellow">Get started free</div>
+              </div>
+              <div style="height:80px;background:rgba(255,255,255,.03);border-radius:4px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:10px;color:rgba(255,255,255,.2);">Feature highlights ↓</span>
+              </div>
+              <div style="font-size:10px;color:rgba(239,68,68,.5);text-align:center;">↑ most prospects stop here</div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:10px;color:var(--mc-positive);font-weight:700;margin-bottom:6px;">PROPOSED — Sticky CTA bar</p>
+            <div class="wireframe">
+              <div class="wf-annotation ok">Always visible</div>
+              <div class="wf-nav">
+                <div class="wf-nav-dot"></div><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div>
+              </div>
+              <div class="wf-hero">
+                <div class="wf-h1">Pricing</div>
+                <div class="wf-sub">Find the right plan for you</div>
+              </div>
+              <div style="height:80px;background:rgba(255,255,255,.03);border-radius:4px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:10px;color:rgba(255,255,255,.2);">Feature highlights ↓</span>
+              </div>
+              <div class="wf-sticky">
+                <span class="wf-sticky-text">Start free · No credit card needed</span>
+                <span class="wf-sticky-btn">Sign up free</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mc-text-muted);margin-top:12px;">
+          <strong style="color:var(--mc-accent);">Hypothesis:</strong> A sticky bar with "Start for free — no credit card needed" appearing after 20% scroll will lift signup starts by capturing intent at the moment prospects are evaluating, before they bounce.
+        </p>
+      </div>
+
+      <!-- Prototype 2: Trust signals in hero -->
+      <div class="proto-card">
+        <div class="proto-label proposed">Opportunity 2 — Trust Signals Above Fold</div>
+        <div class="proto-desc">Since most prospects decide within the top 43% of the page, adding social proof and trust signals to the hero section can reduce early abandonment.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <p style="font-size:10px;color:var(--mc-negative);font-weight:700;margin-bottom:6px;">CURRENT — Hero without trust</p>
+            <div class="wireframe">
+              <div class="wf-annotation">No social proof</div>
+              <div class="wf-nav">
+                <div class="wf-nav-dot"></div><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div>
+              </div>
+              <div class="wf-hero" style="margin-bottom:10px;">
+                <div class="wf-h1">Simple, transparent pricing</div>
+                <div class="wf-sub">Pick your plan. Upgrade anytime.</div>
+                <div class="wf-toggle">
+                  <div class="wf-toggle-track"><div class="wf-toggle-thumb"></div></div>
+                  <span class="wf-toggle-label">Monthly / Annual</span>
+                </div>
+              </div>
+              <div style="height:60px;background:rgba(255,255,255,.03);border-radius:4px;"></div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:10px;color:var(--mc-positive);font-weight:700;margin-bottom:6px;">PROPOSED — Hero with trust bar</p>
+            <div class="wireframe">
+              <div class="wf-annotation ok">Trust visible</div>
+              <div class="wf-nav">
+                <div class="wf-nav-dot"></div><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div>
+              </div>
+              <div class="wf-hero" style="margin-bottom:8px;">
+                <div class="wf-h1">Simple, transparent pricing</div>
+                <div class="wf-sub">Pick your plan. Upgrade anytime.</div>
+              </div>
+              <div class="wf-trust">
+                <div class="wf-trust-item">⭐ 4.8/5<br>G2</div>
+                <div class="wf-trust-item">13M+<br>customers</div>
+                <div class="wf-trust-item">🔒 No CC<br>required</div>
+              </div>
+              <div class="wf-social">
+                <div class="wf-avatar"></div>
+                <span>"Switched from competitor — worth it"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mc-text-muted);margin-top:12px;">
+          <strong style="color:var(--mc-accent);">Hypothesis:</strong> Adding a 3-item trust bar (rating, customer count, no-CC badge) and a rotating micro-testimonial in the hero will reduce early bounce for prospects who haven't yet committed to reading the full page.
+        </p>
+      </div>
+
+      <!-- Prototype 3: Plan table higher -->
+      <div class="proto-card">
+        <div class="proto-label proposed">Opportunity 3 — Plan Table Above the Fold</div>
+        <div class="proto-desc">The plan comparison table is the primary reason prospects visit this page. Moving it closer to the top reduces the scroll distance to the most important content.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <p style="font-size:10px;color:var(--mc-negative);font-weight:700;margin-bottom:6px;">CURRENT — Plans buried below fold</p>
+            <div class="wireframe">
+              <div class="wf-annotation">Plans ~60% down</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div class="wf-hero" style="margin-bottom:8px;">
+                <div class="wf-h1">Pricing</div>
+                <div class="wf-sub">Find the right plan</div>
+                <div class="wf-cta yellow">Get started</div>
+              </div>
+              <div style="height:40px;background:rgba(255,255,255,.03);border-radius:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:9px;color:rgba(255,255,255,.2);">Feature section</span>
+              </div>
+              <div style="height:40px;background:rgba(255,255,255,.03);border-radius:4px;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:9px;color:rgba(239,68,68,.4);">Plans ← 60% scroll required</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:10px;color:var(--mc-positive);font-weight:700;margin-bottom:6px;">PROPOSED — Plans near top</p>
+            <div class="wireframe">
+              <div class="wf-annotation ok">Plans visible</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="text-align:center;padding:8px 0 10px;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);">Simple, transparent pricing</div>
+              <div class="wf-plans">
+                <div class="wf-plan">
+                  <div class="wf-plan-name">FREE</div>
+                  <div class="wf-plan-price">$0</div>
+                  <div class="wf-plan-btn">Start free</div>
+                </div>
+                <div class="wf-plan">
+                  <div class="wf-plan-name">ESS</div>
+                  <div class="wf-plan-price">$13</div>
+                  <div class="wf-plan-btn">Try it</div>
+                </div>
+                <div class="wf-plan highlight">
+                  <div class="wf-plan-name">STD ✦</div>
+                  <div class="wf-plan-price">$20</div>
+                  <div class="wf-plan-btn">Try it</div>
+                </div>
+                <div class="wf-plan">
+                  <div class="wf-plan-name">PREM</div>
+                  <div class="wf-plan-price">$350</div>
+                  <div class="wf-plan-btn">Try it</div>
+                </div>
+              </div>
+              <div style="height:40px;background:rgba(255,255,255,.03);border-radius:4px;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:9px;color:rgba(255,255,255,.2);">Feature details ↓</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mc-text-muted);margin-top:12px;">
+          <strong style="color:var(--mc-accent);">Hypothesis:</strong> Reordering the page to show the plan comparison table within the top 30% of scroll — before feature-by-feature breakdowns — will increase the % of prospects who interact with a plan CTA.
+        </p>
+      </div>
+
+      <!-- Prototype 4: Annual toggle prominence -->
+      <div class="proto-card">
+        <div class="proto-label proposed">Opportunity 4 — Prominent Annual Toggle</div>
+        <div class="proto-desc">Many prospects may not notice the monthly/annual pricing toggle, missing the discount framing that makes plans feel more affordable.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <p style="font-size:10px;color:var(--mc-negative);font-weight:700;margin-bottom:6px;">CURRENT — Subtle toggle</p>
+            <div class="wireframe">
+              <div class="wf-annotation">Easy to miss</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="padding:10px 0 8px;text-align:center;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);">Pricing</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
+                <span style="font-size:9px;color:rgba(255,255,255,.3);">Monthly</span>
+                <div style="width:24px;height:12px;background:rgba(255,255,255,.15);border-radius:6px;"></div>
+                <span style="font-size:9px;color:rgba(255,255,255,.3);">Annual</span>
+              </div>
+              <div class="wf-plans">
+                <div class="wf-plan"><div class="wf-plan-name">FREE</div><div class="wf-plan-price">$0</div></div>
+                <div class="wf-plan"><div class="wf-plan-name">ESS</div><div class="wf-plan-price">$13</div></div>
+                <div class="wf-plan highlight"><div class="wf-plan-name">STD</div><div class="wf-plan-price">$20</div></div>
+                <div class="wf-plan"><div class="wf-plan-name">PREM</div><div class="wf-plan-price">$350</div></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:10px;color:var(--mc-positive);font-weight:700;margin-bottom:6px;">PROPOSED — Savings-first toggle</p>
+            <div class="wireframe">
+              <div class="wf-annotation ok">Discount visible</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="padding:10px 0 6px;text-align:center;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);">Pricing</div>
+              <div style="background:var(--mc-accent-subtle);border:1px solid rgba(255,224,27,.2);border-radius:6px;padding:8px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:9px;color:rgba(255,255,255,.4);">Monthly</span>
+                <div style="width:28px;height:14px;background:var(--mc-accent);border-radius:7px;position:relative;">
+                  <div style="width:10px;height:10px;background:var(--mc-accent-text);border-radius:50%;position:absolute;top:2px;right:2px;"></div>
+                </div>
+                <span style="font-size:9px;color:var(--mc-accent);font-weight:700;">Annual · Save 15%</span>
+              </div>
+              <div class="wf-plans">
+                <div class="wf-plan"><div class="wf-plan-name">FREE</div><div class="wf-plan-price">$0</div></div>
+                <div class="wf-plan"><div class="wf-plan-name">ESS</div><div class="wf-plan-price">$11</div></div>
+                <div class="wf-plan highlight"><div class="wf-plan-name">STD</div><div class="wf-plan-price">$17</div></div>
+                <div class="wf-plan"><div class="wf-plan-name">PREM</div><div class="wf-plan-price">$299</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mc-text-muted);margin-top:12px;">
+          <strong style="color:var(--mc-accent);">Hypothesis:</strong> Making the annual toggle more visually prominent and labeling it "Save 15%" will increase annual plan selection rate among prospects who reach the plan table, boosting AOV.
+        </p>
+      </div>
+
+    </div><!-- /proto-grid desktop -->
+
+  </div><!-- /panel-desktop -->
+
+
+  <!-- ══════════════════════════════════════════
+       MOBILE PANEL
+  ══════════════════════════════════════════ -->
+  <div class="device-panel" id="panel-mobile">
+
+    <div class="section-label">Mobile Prospects · Past 60 Days</div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">JS Error on Page Load</div>
+        <div class="kpi-value amber">54</div>
+        <div class="kpi-sub">Prospects from social ads hit a reload-triggering JS error</div>
+        <span class="kpi-badge badge-neg">⚠ Social traffic impacted</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Layout Shifts (CLS)</div>
+        <div class="kpi-value amber">83</div>
+        <div class="kpi-sub">Users experiencing content jumping after page refresh</div>
+        <span class="kpi-badge badge-warn">Affects retention</span>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">403 Errors</div>
+        <div class="kpi-value">53</div>
+        <div class="kpi-sub">Users hitting network errors on the pricing forms endpoint</div>
+        <span class="kpi-badge badge-warn">Silent failure</span>
+      </div>
+    </div>
+
+    <div class="cards-2">
+
+      <!-- Mobile opportunities -->
+      <div class="card">
+        <div class="card-title">FullStory Opportunities — Mobile</div>
+        <div class="card-sub">Friction points most likely to suppress mobile conversions</div>
+        <div class="opp-list">
+          <div class="opp-card critical">
+            <div class="opp-header">
+              <div class="opp-title">Error Causes Page Reload After Social Ad Click</div>
+              <div class="opp-users">54 users</div>
+            </div>
+            <div class="opp-desc">A JS error fires after a custom Experiment event on mobile, causing a full page reload. This hits users arriving from social media ads — a high-intent audience — at the worst possible moment.</div>
+            <div class="opp-hypothesis">Instrument the Experiment event error handler to fail gracefully without page reload. This fix alone could recover paid social conversion rate on mobile.</div>
+          </div>
+          <div class="opp-card critical">
+            <div class="opp-header">
+              <div class="opp-title">CLS After Page Refresh on Pricing</div>
+              <div class="opp-users">83 users</div>
+            </div>
+            <div class="opp-desc">Layout shifts after reload on the pricing page cause content to jump, disrupting the plan comparison experience on mobile. One user also encountered a 406 error in the signup flow.</div>
+            <div class="opp-hypothesis">Pin plan card heights with CSS min-height and lazy-load non-critical assets to eliminate CLS. Target a CLS score below 0.1.</div>
+          </div>
+          <div class="opp-card">
+            <div class="opp-header">
+              <div class="opp-title">Intermittent Errors Impacting UX</div>
+              <div class="opp-users">111 users</div>
+            </div>
+            <div class="opp-desc">Network errors and uncaught JS exceptions causing page loading delays and interaction latency across Mailchimp pages including pricing.</div>
+            <div class="opp-hypothesis">Conduct a mobile-specific performance audit targeting GTM and analytics tag load order — these third-party scripts appear to be blocking interactivity on low-end devices.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile sessions -->
+      <div class="card">
+        <div class="card-title">Mobile Session Replays</div>
+        <div class="card-sub" style="margin-bottom:14px;">5 sample prospect sessions on mobile — watch the JS error and layout shift in action</div>
+        <div class="session-list">
+          <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/1884642606727048838:1914359338211663125?utm_source=fullstory-mcp" target="_blank">
+            <span class="session-icon">▶</span>
+            <span>Session 1 — Mobile Prospect</span>
+            <span class="session-id">1884642606727048838:1914359338211663125</span>
+            <span class="session-arrow">→</span>
+          </a>
+          <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/5244880006790458642:4417913064733149323?utm_source=fullstory-mcp" target="_blank">
+            <span class="session-icon">▶</span>
+            <span>Session 2 — Mobile Prospect</span>
+            <span class="session-id">5244880006790458642:4417913064733149323</span>
+            <span class="session-arrow">→</span>
+          </a>
+          <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/2673946846336446683:3188957869185295068?utm_source=fullstory-mcp" target="_blank">
+            <span class="session-icon">▶</span>
+            <span>Session 3 — Mobile Prospect</span>
+            <span class="session-id">2673946846336446683:3188957869185295068</span>
+            <span class="session-arrow">→</span>
+          </a>
+          <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/3698931524862304625:5048123312077592206?utm_source=fullstory-mcp" target="_blank">
+            <span class="session-icon">▶</span>
+            <span>Session 4 — Mobile Prospect</span>
+            <span class="session-id">3698931524862304625:5048123312077592206</span>
+            <span class="session-arrow">→</span>
+          </a>
+          <a class="session-link" href="https://app.fullstory.com/ui/ZHBMT/session/8182178560518645250:1004350290763903786?utm_source=fullstory-mcp" target="_blank">
+            <span class="session-icon">▶</span>
+            <span>Session 5 — Mobile Prospect</span>
+            <span class="session-id">8182178560518645250:1004350290763903786</span>
+            <span class="session-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Mobile Prototypes -->
+    <div class="section-label">Mobile — Prototype Opportunities</div>
+    <div class="section-title">3 Mobile-Specific Design Changes</div>
+    <div class="section-subtitle">Targeting the scroll, CLS, and conversion friction points unique to the mobile pricing experience.</div>
+
+    <div class="proto-grid">
+
+      <!-- Mobile Prototype 1: Condensed plan selector -->
+      <div class="proto-card">
+        <div class="proto-label proposed">Opportunity 1 — Condensed Plan Selector</div>
+        <div class="proto-desc">The 4-column plan table doesn't translate to mobile — prospects have to scroll horizontally or zoom to compare plans, creating friction at the most critical decision point.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <p style="font-size:10px;color:var(--mc-negative);font-weight:700;margin-bottom:6px;">CURRENT — Horizontal scroll table</p>
+            <div class="wireframe" style="min-height:240px;">
+              <div class="wf-annotation">Hard to compare</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="padding:6px 0 8px;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-align:center;">Pricing</div>
+              <div style="overflow:hidden;border-radius:4px;margin-bottom:8px;">
+                <div style="display:flex;gap:4px;width:160%;transform:scale(.65);transform-origin:left top;">
+                  <div class="wf-plan" style="min-width:60px;"><div class="wf-plan-name">FREE</div><div class="wf-plan-price">$0</div></div>
+                  <div class="wf-plan" style="min-width:60px;"><div class="wf-plan-name">ESS</div><div class="wf-plan-price">$13</div></div>
+                  <div class="wf-plan highlight" style="min-width:60px;"><div class="wf-plan-name">STD</div><div class="wf-plan-price">$20</div></div>
+                  <div class="wf-plan" style="min-width:60px;"><div class="wf-plan-name">PREM</div><div class="wf-plan-price">$350</div></div>
+                </div>
+              </div>
+              <div style="font-size:9px;color:rgba(255,255,255,.2);text-align:center;">← scroll to see all plans →</div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:10px;color:var(--mc-positive);font-weight:700;margin-bottom:6px;">PROPOSED — Vertical card stack</p>
+            <div class="wireframe" style="min-height:240px;">
+              <div class="wf-annotation ok">Scannable</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="padding:6px 0 8px;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-align:center;">Choose your plan</div>
+              <div class="wf-mobile-plans">
+                <div class="wf-mobile-plan">
+                  <span style="font-size:9px;color:rgba(255,255,255,.4);font-weight:700;">FREE · $0/mo</span>
+                  <span style="font-size:9px;color:rgba(255,255,255,.25);">Start free</span>
+                </div>
+                <div class="wf-mobile-plan">
+                  <span style="font-size:9px;color:rgba(255,255,255,.4);font-weight:700;">ESSENTIALS · $13/mo</span>
+                  <span style="font-size:9px;color:rgba(255,255,255,.25);">Try it</span>
+                </div>
+                <div class="wf-mobile-plan highlight">
+                  <span style="font-size:9px;color:var(--mc-accent);font-weight:700;">STANDARD · $20/mo ✦</span>
+                  <span style="font-size:9px;color:var(--mc-accent);">Best value</span>
+                </div>
+              </div>
+              <div class="wf-scroll-indicator">
+                <div class="wf-scroll-pip active"></div>
+                <div class="wf-scroll-pip"></div>
+                <div class="wf-scroll-pip"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mc-text-muted);margin-top:12px;">
+          <strong style="color:var(--mc-accent);">Hypothesis:</strong> Replacing the horizontal plan table with a vertical stacked card layout on mobile will reduce plan-comparison friction and increase the rate at which mobile prospects click a plan CTA.
+        </p>
+      </div>
+
+      <!-- Mobile Prototype 2: Persistent bottom CTA -->
+      <div class="proto-card">
+        <div class="proto-label proposed">Opportunity 2 — Persistent Bottom CTA Bar</div>
+        <div class="proto-desc">Mobile prospects scroll fast and often miss the in-page CTAs. A fixed bottom bar ensures the primary conversion action is always one tap away.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <p style="font-size:10px;color:var(--mc-negative);font-weight:700;margin-bottom:6px;">CURRENT — CTA buried in content</p>
+            <div class="wireframe" style="min-height:220px;">
+              <div class="wf-annotation">CTA hard to find</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="height:50px;background:rgba(255,255,255,.04);border-radius:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:rgba(255,255,255,.2);">Hero section</span></div>
+              <div style="height:50px;background:rgba(255,255,255,.03);border-radius:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:rgba(255,255,255,.2);">Feature section</span></div>
+              <div style="height:50px;background:rgba(255,255,255,.03);border-radius:4px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:rgba(239,68,68,.4);">CTA ← must scroll here</span></div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:10px;color:var(--mc-positive);font-weight:700;margin-bottom:6px;">PROPOSED — Fixed bottom CTA</p>
+            <div class="wireframe" style="min-height:220px;padding-bottom:46px;">
+              <div class="wf-annotation ok">Always accessible</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="height:50px;background:rgba(255,255,255,.04);border-radius:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:rgba(255,255,255,.2);">Hero section</span></div>
+              <div style="height:50px;background:rgba(255,255,255,.03);border-radius:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:rgba(255,255,255,.2);">Feature section</span></div>
+              <div class="wf-mobile-cta">Start for free — no credit card needed</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mc-text-muted);margin-top:12px;">
+          <strong style="color:var(--mc-accent);">Hypothesis:</strong> A fixed bottom CTA bar on mobile that appears after 15% scroll will increase tap-to-signup rate by making the primary action reachable at any scroll depth, without disrupting the browsing experience.
+        </p>
+      </div>
+
+      <!-- Mobile Prototype 3: Error recovery -->
+      <div class="proto-card">
+        <div class="proto-label proposed">Opportunity 3 — Graceful Error Recovery</div>
+        <div class="proto-desc">54 mobile prospects from social ads hit a JS error that causes a full page reload. This is the single highest-priority technical fix — it's burning paid media budget.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <p style="font-size:10px;color:var(--mc-negative);font-weight:700;margin-bottom:6px;">CURRENT — Silent reload</p>
+            <div class="wireframe" style="min-height:200px;">
+              <div class="wf-annotation">Session destroyed</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="height:60px;background:rgba(255,255,255,.04);border-radius:4px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:rgba(255,255,255,.2);">Loading pricing...</span></div>
+              <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:8px;text-align:center;">
+                <div style="font-size:10px;color:var(--mc-negative);font-weight:700;margin-bottom:4px;">⚠ JS Error</div>
+                <div style="font-size:9px;color:rgba(255,255,255,.3);">window.webkit.messageHandlers...</div>
+                <div style="font-size:9px;color:rgba(239,68,68,.6);margin-top:6px;">→ Full page reload triggered</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:10px;color:var(--mc-positive);font-weight:700;margin-bottom:6px;">PROPOSED — Graceful fallback</p>
+            <div class="wireframe" style="min-height:200px;">
+              <div class="wf-annotation ok">Session preserved</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="height:60px;background:rgba(255,255,255,.04);border-radius:4px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:rgba(255,255,255,.2);">Pricing loads normally</span></div>
+              <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:4px;padding:8px;text-align:center;">
+                <div style="font-size:10px;color:var(--mc-positive);font-weight:700;margin-bottom:4px;">✓ Error caught silently</div>
+                <div style="font-size:9px;color:rgba(255,255,255,.3);">try/catch wraps webkit handler</div>
+                <div style="font-size:9px;color:rgba(34,197,94,.6);margin-top:6px;">Session continues uninterrupted</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mc-text-muted);margin-top:12px;">
+          <strong style="color:var(--mc-accent);">Hypothesis:</strong> Wrapping the <code>window.webkit.messageHandlers</code> call in a try/catch will eliminate the page reload for 54+ mobile prospects per month arriving from social ads, directly recovering paid social conversion rate.
+        </p>
+      </div>
+
+      <!-- Mobile Prototype 4: Social proof for mobile -->
+      <div class="proto-card">
+        <div class="proto-label proposed">Opportunity 4 — Mobile-First Social Proof</div>
+        <div class="proto-desc">Mobile prospects from social ads have less brand familiarity than organic searchers. A compact social proof module addresses trust hesitation before they evaluate pricing.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <p style="font-size:10px;color:var(--mc-negative);font-weight:700;margin-bottom:6px;">CURRENT — No mobile trust module</p>
+            <div class="wireframe" style="min-height:200px;">
+              <div class="wf-annotation">No reassurance</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="padding:8px 0;text-align:center;">
+                <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:4px;">Simple pricing</div>
+                <div style="font-size:9px;color:rgba(255,255,255,.2);">Pick your plan</div>
+              </div>
+              <div style="height:80px;background:rgba(255,255,255,.03);border-radius:4px;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:9px;color:rgba(255,255,255,.15);">Plan cards below...</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:10px;color:var(--mc-positive);font-weight:700;margin-bottom:6px;">PROPOSED — Trust bar under hero</p>
+            <div class="wireframe" style="min-height:200px;">
+              <div class="wf-annotation ok">Instant confidence</div>
+              <div class="wf-nav"><div class="wf-nav-dot"></div><div class="wf-nav-dot accent"></div></div>
+              <div style="padding:8px 0;text-align:center;">
+                <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:4px;">Simple pricing</div>
+                <div style="font-size:9px;color:rgba(255,255,255,.2);margin-bottom:8px;">Pick your plan</div>
+                <div style="display:flex;gap:6px;justify-content:center;">
+                  <span style="background:rgba(255,255,255,.06);border-radius:4px;padding:4px 8px;font-size:9px;color:rgba(255,255,255,.4);">⭐ 4.8 G2</span>
+                  <span style="background:rgba(255,255,255,.06);border-radius:4px;padding:4px 8px;font-size:9px;color:rgba(255,255,255,.4);">13M+ users</span>
+                  <span style="background:rgba(255,255,255,.06);border-radius:4px;padding:4px 8px;font-size:9px;color:rgba(255,255,255,.4);">🔒 No CC</span>
+                </div>
+              </div>
+              <div style="height:50px;background:rgba(255,255,255,.03);border-radius:4px;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:9px;color:rgba(255,255,255,.15);">Plan cards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--mc-text-muted);margin-top:12px;">
+          <strong style="color:var(--mc-accent);">Hypothesis:</strong> Adding a compact 3-chip trust bar (G2 rating, customer count, no-CC badge) directly under the mobile hero will reduce price-hesitation bounce rate among prospects arriving from paid social campaigns.
+        </p>
+      </div>
+
+    </div><!-- /proto-grid mobile -->
+
+  </div><!-- /panel-mobile -->
+
+
+  <div class="divider"></div>
+
+  <!-- ── Methodology ── -->
+  <div class="section-label">Methodology</div>
+  <div class="card" style="margin-bottom:28px;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;font-size:12px;">
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mc-text-muted);margin-bottom:8px;">Data Source</div>
+        <div style="color:var(--mc-text);line-height:1.6;">FullStory behavioral analytics. Scoped to <code>mailchimp.com/pricing</code> pages only. All users filtered to prospects (no <code>*.admin.mailchimp.com</code> visits, no login events).</div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mc-text-muted);margin-bottom:8px;">Period &amp; Segments</div>
+        <div style="color:var(--mc-text);line-height:1.6;">Past 60 days (Feb 14 – Apr 15, 2026). Desktop segment ID: <code>QV3LphjtlQsW</code>. Mobile segment ID: <code>wVgqUY65qnlx</code>. Opportunities scoped to Pricing page ID 517.</div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mc-text-muted);margin-bottom:8px;">Limitations</div>
+        <div style="color:var(--mc-text);line-height:1.6;">Rage/dead click counts at zero may reflect segment scoping limitations in this FullStory MCP version rather than true absence of friction. Session replays are the best source for qualitative validation. Opportunities are pre-ranked by StoryAI for the past 30 days.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Mailchimp Web Growth · FullStory Prospect Analysis · Pricing Page</span>
+  <span>Generated Apr 15, 2026 · <a href="https://app.fullstory.com/ui/ZHBMT" target="_blank">Open in FullStory →</a></span>
+</footer>
+
+<script>
+  function switchTab(device, btn) {
+    document.querySelectorAll('.device-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.device-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + device).classList.add('active');
+  }
+</script>
+
+
+</body></html>
