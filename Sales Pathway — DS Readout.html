@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://github.intuit.com/pages/drocha/drocha-reports/sales-pathway/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sales Pathway — DS Readout</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-2: #232734;
+    --border: #2e3345;
+    --text: #e4e7ef;
+    --text-muted: #8b8fa7;
+    --accent: #FFE01B;
+    --accent-text: #241C15;
+    --accent-subtle: rgba(255, 224, 27, .10);
+    --positive: #22c55e;
+    --amber: #f59e0b;
+    --amber-bg: rgba(245, 158, 11, .12);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .container { max-width: 880px; margin: 0 auto; padding: 36px 28px 64px; }
+
+  .hdr-rule { height: 4px; background: var(--accent); border-radius: 2px; margin-bottom: 14px; width: 56px; }
+  h1 { font-size: 1.6rem; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.02em; }
+  .meta { color: var(--text-muted); font-size: .8rem; margin: 0; }
+
+  h2 {
+    font-size: 1.05rem; font-weight: 700; margin: 36px 0 12px;
+    letter-spacing: -0.01em; padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase; letter-spacing: .06em;
+    color: var(--text-muted); font-size: .72rem;
+  }
+
+  p { margin: 0 0 12px; }
+  strong { color: var(--text); font-weight: 600; }
+  code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    background: var(--surface-2); padding: 1px 5px; border-radius: 4px;
+    font-size: .82em; color: var(--text);
+  }
+
+  .kpi-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    margin: 18px 0 8px;
+  }
+  .kpi {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px;
+  }
+  .kpi-label {
+    font-size: .65rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums; line-height: 1.1;
+  }
+  .kpi-sub { font-size: .72rem; color: var(--text-muted); margin-top: 3px; }
+  .kpi.accent { border-color: var(--accent); }
+  .kpi.accent .kpi-value { color: var(--accent); }
+
+  .insights { margin: 12px 0 8px; }
+  details.insight {
+    margin: 0 0 6px; padding: 0;
+    background: transparent; border: none; border-radius: 0;
+    border-left: 3px solid var(--accent);
+    padding: 4px 0 4px 12px;
+  }
+  details.insight > summary {
+    font-weight: 600; font-size: .95rem; color: var(--text);
+    cursor: pointer; list-style: none; padding: 4px 0;
+  }
+  details.insight > summary::-webkit-details-marker { display: none; }
+  details.insight > summary::before {
+    content: "▸"; display: inline-block; width: 14px;
+    color: var(--text-muted); font-size: .75rem;
+    transition: transform .15s;
+  }
+  details.insight[open] > summary::before { content: "▾"; }
+  details.insight .body {
+    color: var(--text-muted); font-size: .87rem; line-height: 1.5;
+    padding: 4px 0 6px 14px;
+  }
+  details.insight .body strong { color: var(--text); }
+  details.insight .body ul.bullet-list { padding-left: 16px; margin-top: 4px; }
+  details.insight .body ul.bullet-list li { font-size: .9rem; margin: 4px 0; }
+
+  ol.recos { padding-left: 20px; margin: 12px 0; }
+  ol.recos li { margin-bottom: 10px; font-size: .9rem; }
+  ol.recos li strong { color: var(--text); }
+  ol.recos li > ul.bullet-list { margin-top: 4px; }
+  ul.bullet-list { padding-left: 18px; margin: 6px 0 0; }
+  ul.bullet-list li { margin: 3px 0; font-size: .9rem; line-height: 1.45; }
+  ul.bullet-list.kicker li { font-size: .85rem; color: var(--text-muted); }
+  ul.bullet-list.kicker li strong { color: var(--text); }
+  .vis-callout > ul.bullet-list { margin-top: 6px; }
+
+  .vis-block { margin: 20px 0; }
+
+  details {
+    margin-top: 24px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; font-size: .82rem;
+  }
+  details summary {
+    cursor: pointer; color: var(--text-muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: .05em; font-size: .68rem;
+  }
+  details[open] summary { margin-bottom: 10px; color: var(--text); }
+  details ul { margin: 0; padding-left: 18px; color: var(--text-muted); }
+  details li { margin-bottom: 4px; }
+
+  /* Top-level collapsible sections (Recommendations, Downstream, Top Referrers) */
+  details.section {
+    background: transparent; border: none; border-radius: 0;
+    padding: 0; margin: 28px 0 0; font-size: 1rem;
+  }
+  details.section > summary {
+    list-style: none; cursor: pointer;
+    color: var(--text); font-weight: 600;
+    text-transform: none; letter-spacing: 0; font-size: 1rem;
+    padding: 0; margin: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  details.section > summary::-webkit-details-marker { display: none; }
+  details.section > summary::before {
+    content: "▸"; display: inline-block; width: 18px;
+    color: var(--text-muted); font-size: .85rem;
+  }
+  details.section[open] > summary::before { content: "▾"; }
+  details.section > summary h2 {
+    margin: 0; padding: 0; border: none;
+  }
+  details.section[open] > summary { margin-bottom: 14px; color: var(--text); }
+  details.section ul { color: inherit; padding-left: 18px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: .82rem; }
+  th, td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* Embedded engagement-map styles (scoped to .vis-block) */
+  .vis-block { --indigo: #6366f1; --teal: #14b8a6; }
+  .vis-block .vis-sub { color: var(--text-muted); font-size: .8rem; margin: 0 0 18px; }
+  .vis-block .vis-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .vis-block .vis-summary { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px; }
+  .vis-block .vis-summary-label { font-size: .65rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; }
+  .vis-block .vis-summary-value { font-size: 1.3rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .vis-block .vis-summary-sub { font-size: .72rem; color: var(--text-muted); }
+  .vis-block .vis-legend { display: flex; gap: 14px; margin: 0 0 16px; flex-wrap: wrap; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
+  .vis-block .vis-legend-item { display: flex; align-items: center; gap: 7px; font-size: .75rem; color: var(--text-muted); }
+  .vis-block .vis-swatch { width: 20px; height: 10px; border-radius: 3px; }
+  .vis-block .vis-section-title { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin: 18px 0 8px; }
+  .vis-block .vis-module { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .vis-block .vis-module-head { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+  .vis-block .vis-module-name { font-size: .98rem; font-weight: 600; letter-spacing: -0.01em; }
+  .vis-block .vis-module-loc { color: var(--text-muted); font-size: .76rem; margin-top: 2px; }
+  .vis-block .vis-module-total { font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap; }
+  .vis-block .vis-module-total .unit { font-size: .65rem; color: var(--text-muted); font-weight: 400; margin-left: 5px; }
+  .vis-block .vis-bar-row { display: grid; grid-template-columns: minmax(180px, 240px) 1fr 90px; gap: 12px; align-items: center; padding: 5px 0; border-top: 1px dashed var(--border); }
+  .vis-block .vis-bar-row:first-of-type { border-top: 0; }
+  .vis-block .vis-bar-label { font-size: .78rem; }
+  .vis-block .vis-bar-label .cta { font-weight: 500; }
+  .vis-block .vis-bar-label .path { display: block; font-size: .68rem; color: var(--text-muted); margin-top: 1px; }
+  .vis-block .vis-bar-track { position: relative; height: 12px; background: var(--surface-2); border-radius: 6px; overflow: hidden; }
+  .vis-block .vis-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; }
+  .vis-block .vis-bar-fill.primary { background: var(--accent); }
+  .vis-block .vis-bar-fill.secondary { background: var(--indigo); }
+  .vis-block .vis-bar-fill.tertiary { background: var(--teal); }
+  .vis-block .vis-bar-fill.dim { background: var(--text-muted); }
+  .vis-block .vis-bar-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; font-size: .8rem; }
+  .vis-block .vis-bar-value .pct { display: block; font-size: .65rem; color: var(--text-muted); font-weight: 400; }
+  .vis-block .vis-module.spotlight { border: 1px solid var(--accent); background: linear-gradient(180deg, var(--accent-subtle), var(--surface) 80%); }
+  .vis-block .vis-pill { display: inline-block; font-size: .62rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: middle; margin-left: 6px; }
+  .vis-block .vis-pill.workhorse { background: var(--accent); color: var(--accent-text); }
+  .vis-block .vis-pill.target { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber); }
+  .vis-block .vis-callout { border-left: 3px solid var(--accent); background: var(--accent-subtle); padding: 12px 16px; margin: 18px 0; border-radius: 0 6px 6px 0; font-size: .85rem; }
+  .vis-block .vis-callout strong { color: var(--accent); }
+  .vis-block .vis-callout.amber { border-left-color: var(--amber); background: var(--amber-bg); }
+  .vis-block .vis-callout.amber strong { color: var(--amber); }
+
+  @media (max-width: 720px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .container { padding: 20px 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hdr-rule"></div>
+  <h1>Sales Pathway Utilization</h1>
+  <p class="meta">Last 90d (2026-01-27 → 2026-04-26) · Web Growth · Bot-filtered</p>
+
+  <!-- Top-line KPIs -->
+  <div class="kpi-row">
+    <div class="kpi accent">
+      <div class="kpi-label">/sales visitors (90d)</div>
+      <div class="kpi-value">33.4K</div>
+      <div class="kpi-sub">53,307 pageviews</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">From /pricing/marketing</div>
+      <div class="kpi-value">57%</div>
+      <div class="kpi-sub">19,061 of arrivals</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Workhorse CTA</div>
+      <div class="kpi-value">13.2K</div>
+      <div class="kpi-sub">DPM · "Request a Demo"</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">ChiliPiper bookings on /sales</div>
+      <div class="kpi-value">354</div>
+      <div class="kpi-sub">~118/mo · 1.06% of /sales visitors</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM LINE -->
+  <h2>Bottom line</h2>
+  <ul class="bottom-line">
+    <li><strong>One module drives the pathway:</strong> the <strong>Dual Plan Module (DPM)</strong> on <code>/pricing/marketing/</code> — full module = left description panel + right plan card.</li>
+    <li><strong>Workhorse:</strong> the DPM's <strong>always-on left-side link</strong> — "Request a Demo" (Standard state) / "Contact sales" (Premium / 100K+ state). Both route to /sales.</li>
+    <li><strong>Secondary surface:</strong> right-side plan-card "Request Demo" button — appears only in Premium (100K+) state. Also routes to /sales.</li>
+    <li><strong>Customizer pathway is small:</strong> ~26× fewer clicks-to-/sales than the DPM.</li>
+  </ul>
+  <style>
+    .bottom-line { margin: 0 0 var(--gap); padding-left: 20px; }
+    .bottom-line li { margin: 6px 0; }
+  </style>
+
+  <!-- VISUAL (inlined) -->
+  <div class="vis-block">
+    <div class="vis-grid-2" style="margin-bottom:18px">
+      <div class="vis-summary">
+        <span class="vis-summary-label">/sales arrivals (90d)</span>
+        <span class="vis-summary-value">33,409</span>
+        <span class="vis-summary-sub">53,307 pageviews · 57% referred from /pricing/marketing/</span>
+      </div>
+      <div class="vis-summary">
+        <span class="vis-summary-label">Tracked CTA clicks → /sales (90d)</span>
+        <span class="vis-summary-value">40,310</span>
+        <span class="vis-summary-sub">22,934 unique-clicker rows across all modules &amp; locales</span>
+      </div>
+    </div>
+
+    <div class="vis-legend">
+      <div class="vis-legend-item"><span class="vis-swatch" style="background:var(--accent)"></span>Dual Plan Module (DPM) — full module on /pricing/marketing/ (left description panel + right plan card) <span style="color:var(--text-muted)">[GA4: <code>singleplan</code>]</span></div>
+      <div class="vis-legend-item"><span class="vis-swatch" style="background:var(--indigo)"></span>p23hero / p23headliner — top-of-page hero CTAs</div>
+      <div class="vis-legend-item"><span class="vis-swatch" style="background:var(--teal)"></span>pricingplanscustomizer — bottom three-up plan grid (&gt;100K pathway)</div>
+      <div class="vis-legend-item"><span class="vis-swatch" style="background:var(--text-muted)"></span>other modules</div>
+    </div>
+
+    <div class="vis-section-title">Module ranking — click volume to /sales (last 90d)</div>
+
+    <div class="vis-module spotlight">
+      <div class="vis-module-head">
+        <div>
+          <span class="vis-module-name">Dual Plan Module (DPM) <span class="vis-pill workhorse">Workhorse</span></span>
+          <div class="vis-module-loc">Full module on /pricing/marketing/ — left description panel + right plan card. The <strong>always-on left-side link</strong> reads "Request a Demo" (Standard state) or "Contact sales" (Premium / 100K+ state); the right-side plan card adds a "Request Demo" button only in Premium state. All routes go to /sales. <span style="opacity:0.7">GA4 <code>section_location = "singleplan"</code> · incl. PACT-3200 always-displayed sales CTA</span></div>
+        </div>
+        <div class="vis-module-total">18,371<span class="unit">unique clickers</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">request_a_demo</span><span class="path">/pricing/marketing/ (English)</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill primary" style="width:100%"></div></div>
+        <div class="vis-bar-value">13,248<span class="pct">72% of module</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">solicita_una_demostración</span><span class="path">/es/pricing/marketing/</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill primary" style="width:13.5%"></div></div>
+        <div class="vis-bar-value">1,785<span class="pct">10%</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">(blank label / unlabeled)</span><span class="path">/pricing/marketing/</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill primary" style="width:6.6%"></div></div>
+        <div class="vis-bar-value">878<span class="pct">5%</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">solicite_uma_demonstração</span><span class="path">/pt-br/pricing/marketing/</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill primary" style="width:4.0%"></div></div>
+        <div class="vis-bar-value">529<span class="pct">3%</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">demander_une_démo</span><span class="path">/fr/pricing/marketing/</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill primary" style="width:3.6%"></div></div>
+        <div class="vis-bar-value">477<span class="pct">3%</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">other locales (it, de, others)</span><span class="path">all remaining singleplan rows</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill primary" style="width:11%"></div></div>
+        <div class="vis-bar-value">1,454<span class="pct">8%</span></div>
+      </div>
+    </div>
+
+    <div class="vis-module">
+      <div class="vis-module-head">
+        <div>
+          <span class="vis-module-name">pricingplanscustomizer <span class="vis-pill target">&gt;100K pathway</span></span>
+          <div class="vis-module-loc">Sales messaging surfaced inside the customizer (incl. when contacts &gt;100K is selected)</div>
+        </div>
+        <div class="vis-module-total">708<span class="unit">unique clickers</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">request_a_demo</span><span class="path">/pricing/marketing/ (English)</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill tertiary" style="width:46%"></div></div>
+        <div class="vis-bar-value">326<span class="pct">46%</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">contact_sales</span><span class="path">/pricing/marketing/ (English)</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill tertiary" style="width:13%"></div></div>
+        <div class="vis-bar-value">91<span class="pct">13%</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">request_a_demo</span><span class="path">/pricing/marketing/compare-plans/</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill tertiary" style="width:6.2%"></div></div>
+        <div class="vis-bar-value">44<span class="pct">6%</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">solicita_una_demostración / contacta_con_ventas</span><span class="path">/es/pricing/marketing/</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill tertiary" style="width:7.3%"></div></div>
+        <div class="vis-bar-value">52<span class="pct">7%</span></div>
+      </div>
+      <div class="vis-bar-row">
+        <div class="vis-bar-label"><span class="cta">all other locales + variants</span><span class="path">it/, fr/, pt-br/, de/, sms-marketing pages, etc.</span></div>
+        <div class="vis-bar-track"><div class="vis-bar-fill tertiary" style="width:27.5%"></div></div>
+        <div class="vis-bar-value">195<span class="pct">28%</span></div>
+      </div>
+    </div>
+
+    <details class="vis-other">
+      <summary>All other modules combined — 3,855 unique clickers</summary>
+
+      <div class="vis-module" style="margin-top:10px">
+        <div class="vis-module-head">
+          <div>
+            <span class="vis-module-name">All other modules</span>
+            <div class="vis-module-loc">Hero CTAs reused across /switch-to-mailchimp/, /features/transactional-email/, /gdpr/, /pricing/premium-details/, plus long-tail (tooltips, announcement banners, ToS, etc.)</div>
+          </div>
+          <div class="vis-module-total">3,855<span class="unit">unique clickers</span></div>
+        </div>
+        <div class="vis-bar-row">
+          <div class="vis-bar-label"><span class="cta">p23hero / p23headliner</span><span class="path">request_a_demo / talk_to_sales hero CTAs</span></div>
+          <div class="vis-bar-track"><div class="vis-bar-fill dim" style="width:77%"></div></div>
+          <div class="vis-bar-value">2,954<span class="pct">77%</span></div>
+        </div>
+        <div class="vis-bar-row">
+          <div class="vis-bar-label"><span class="cta">long-tail (p23texthero, tooltips, banners, etc.)</span><span class="path">across feature, legal, and pricing pages</span></div>
+          <div class="vis-bar-track"><div class="vis-bar-fill dim" style="width:23%"></div></div>
+          <div class="vis-bar-value">901<span class="pct">23%</span></div>
+        </div>
+      </div>
+    </details>
+
+    <div class="vis-callout">
+      <strong>Headline</strong>
+      <ul class="bullet-list">
+        <li><strong>DPM = dominant on-ramp to /sales:</strong> ≈18.4K unique clickers / 90d.</li>
+        <li><strong>Left-side link does most of the work</strong> — "Request a Demo" (Standard) / "Contact sales" (Premium / 100K+).</li>
+        <li><strong>Right-side card</strong> adds a "Request Demo" button only when Premium is shown.</li>
+        <li><strong>Customizer (bottom three-up grid):</strong> ≈708 clickers — <strong>~26× smaller</strong> than the DPM.</li>
+      </ul>
+    </div>
+
+    <div class="vis-section-title">Customizer engagement vs. conversion to /sales</div>
+    <div class="vis-grid-2">
+      <div class="vis-summary">
+        <span class="vis-summary-label">Contacts dropdown click events</span>
+        <span class="vis-summary-value">33,418</span>
+        <span class="vis-summary-sub">FullStory heatmap (CSS selector), /pricing/marketing/, 30d. Click events, not unique users (≈17–22K unique). Not directly verifiable in GA4.</span>
+      </div>
+      <div class="vis-summary">
+        <span class="vis-summary-label">Customizer → /sales (same window, scaled)</span>
+        <span class="vis-summary-value">~236</span>
+        <span class="vis-summary-sub">~708 clickers / 90d × (30/90); 0.7% of dropdown engagement</span>
+      </div>
+    </div>
+    <div class="vis-callout amber">
+      <strong>Tension</strong>
+      <ul class="bullet-list">
+        <li>Heavy exploration: <strong>~33K contacts-dropdown click events</strong> / 30d (FullStory; ≈17–22K unique users).</li>
+        <li>Conversion to /sales click: <strong>&lt;1%</strong>.</li>
+        <li>Read: customizer is a <strong>price-shopping tool</strong>, not a sales-handoff surface.</li>
+      </ul>
+    </div>
+
+    <div class="vis-section-title">DPM by state &amp; surface — Standard vs Premium (100K+ contacts)</div>
+    <ul class="bullet-list" style="margin-bottom:14px">
+      <li>Two click surfaces: <strong>left-side always-on link</strong> + <strong>right-side plan-card button</strong> (Premium-only).</li>
+      <li>Event split via <code>interaction_section_title</code> (state) and <code>display_block_type</code> (link vs button).</li>
+      <li>All routes go to <code>/sales</code>.</li>
+    </ul>
+    <table>
+      <thead><tr>
+        <th>DPM surface</th>
+        <th>State</th>
+        <th>CTA text (English)</th>
+        <th class="num">Clicks (90d)</th>
+        <th class="num">Unique clickers</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Left-side always-on link</td>
+          <td>Standard (lower contact tiers)</td>
+          <td>"Request a Demo"</td>
+          <td class="num">26,487</td>
+          <td class="num">13,500</td>
+        </tr>
+        <tr>
+          <td><strong>Left-side always-on link</strong></td>
+          <td><strong>Premium (100K+ contacts)</strong></td>
+          <td><strong>"Contact sales"</strong></td>
+          <td class="num">86</td>
+          <td class="num">23</td>
+        </tr>
+        <tr>
+          <td><strong>Right-side plan-card button</strong></td>
+          <td><strong>Premium (100K+ contacts)</strong></td>
+          <td><strong>"Request Demo"</strong></td>
+          <td class="num">417</td>
+          <td class="num">345</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="kicker" style="margin-top:8px">English-only figures shown for clarity; locale rows add another ~30% across all states.</p>
+
+    <div class="vis-section-title" style="margin-top:24px">DPM clickers — downstream outcomes on /sales (by state)</div>
+    <table>
+      <thead><tr>
+        <th>State</th>
+        <th class="num">Unique clickers → /sales (90d, all locales)</th>
+        <th class="num">Sales-form submits after click</th>
+        <th class="num">Form-submit rate</th>
+        <th class="num">ChiliPiper bookings after click</th>
+        <th class="num">ChiliPiper rate</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Standard state (all DPM clicks)</td>
+          <td class="num">16,648</td>
+          <td class="num"><strong>2,883</strong></td>
+          <td class="num"><strong>17.3%</strong></td>
+          <td class="num">132</td>
+          <td class="num">0.79%</td>
+        </tr>
+        <tr>
+          <td><strong>Premium state (left-side "Contact sales" + right-side "Request Demo" combined)</strong></td>
+          <td class="num">519</td>
+          <td class="num"><strong>127</strong></td>
+          <td class="num"><strong>16.9%</strong></td>
+          <td class="num">4</td>
+          <td class="num">0.77%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="vis-callout">
+      <strong>Reading the table</strong>
+      <ul class="bullet-list">
+        <li><strong>Form-submit rates are nearly identical</strong> across states (17.3% Standard vs 16.9% Premium).</li>
+        <li><strong>ChiliPiper booking rates are also nearly identical</strong> (0.79% Standard vs 0.77% Premium).</li>
+        <li>Standard-state delivers the volume: <strong>2,883 form submits</strong> + <strong>132 ChiliPiper bookings</strong> over 90d.</li>
+        <li>Premium-state is small (<strong>519 clickers</strong>) but converts at the same rate — the audience reaching it is already qualified.</li>
+        <li>Takeaway: rates don't differ by state — what differs is <strong>traffic to the surface</strong>. Optimizing the Standard-state CTA scales the absolute pipeline; getting more 100K+ users to the Premium-state CTA grows the high-tier audience without per-click rate gains.</li>
+      </ul>
+    </div>
+    <ul class="bullet-list kicker" style="margin-top:8px">
+      <li><strong>Caveat:</strong> form-submit and ChiliPiper counts are first-touch — actions taken <em>after</em> the DPM click in the same 90d window.</li>
+      <li>"Sales-form" = on-page <code>form_name="prospective"</code> on /sales; "ChiliPiper" = <code>chili_piper_mtg_booked</code> event on /sales.</li>
+    </ul>
+  </div>
+
+  <!-- INSIGHTS -->
+  <h2>Insights</h2>
+  <div class="insights">
+    <details class="insight" open="">
+      <summary>1 · One module does ~26× the work</summary>
+      <div class="body">
+        <ul class="bullet-list">
+          <li><strong>DPM → /sales:</strong> 18,371 unique clickers (90d, all locales).</li>
+          <li>Volume concentrated in the <strong>left-side always-on link</strong> ("Request a Demo" / "Contact sales").</li>
+          <li>Right-side card adds a "Request Demo" button only in Premium state.</li>
+          <li>Customizer (&gt;100K pathway): only <strong>708</strong> clickers.</li>
+          <li><strong>If optimizing this funnel, the DPM is the surface to test.</strong></li>
+        </ul>
+      </div>
+    </details>
+    <details class="insight">
+      <summary>2 · The customizer is for price-shopping, not sales handoff</summary>
+      <div class="body">
+        <ul class="bullet-list">
+          <li>Contacts dropdown <strong>click events</strong>: <strong>~33K / 30d</strong> (FullStory heatmap, prospect segment).</li>
+          <li>Note: clicks ≠ unique users — typical click-per-user ratio of 1.5–2× implies <strong>~17–22K unique users</strong> opening the dropdown.</li>
+          <li>GA4 doesn't instrument this specific control as a labeled <code>user_interaction</code> event, so the number isn't independently verifiable in BQ — directional only.</li>
+          <li>Continue into a /sales click: <strong>~0.7%</strong> (using the click-event denominator).</li>
+          <li>Headroom for a more prominent &gt;100K sales CTA — experiment, not confirmed driver.</li>
+        </ul>
+      </div>
+    </details>
+    <details class="insight">
+      <summary>3 · /pricing/premium-details/ punches above its weight</summary>
+      <div class="body">
+        <ul class="bullet-list">
+          <li>Page size: small (<strong>4,343 visitors / 90d</strong>).</li>
+          <li>Click-through to /sales: <strong>6.4%</strong> — vs. ~1.4% on /pricing/marketing/.</li>
+          <li>Action: investigate who lands there; route more high-intent traffic to it.</li>
+        </ul>
+      </div>
+    </details>
+    <details class="insight">
+      <summary>4 · ChiliPiper bookings are the high-intent /sales conversion</summary>
+      <div class="body">
+        <ul class="bullet-list">
+          <li>Two lead-capture mechanisms on /sales: <strong>"Request a Demo" → ChiliPiper widget</strong>, and the <strong>on-page sales lead form</strong> (routes to sales team).</li>
+          <li>ChiliPiper meetings booked: <strong>354 unique prospects / 90d (~118/mo)</strong> — picked a calendar slot, highest-intent action.</li>
+          <li>Top next page after /sales: <strong>exit (45%)</strong>, then <strong>/pricing/marketing (17%)</strong>.</li>
+          <li>Sales-form submit volumes in the appendix below.</li>
+        </ul>
+      </div>
+    </details>
+    <details class="insight">
+      <summary>5 · <code>[fs] Users clicked call sales</code> is dead</summary>
+      <div class="body">
+        <ul class="bullet-list">
+          <li>Fired <strong>0 times in 365 days</strong>.</li>
+          <li>Anyone reasoning about this pathway from that signal is reasoning from a dead source.</li>
+          <li>Use BQ <code>user_interaction</code> events instead.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- RECOMMENDATIONS -->
+  <details class="section">
+  <summary><h2 style="display:inline">Recommendations</h2></summary>
+  <ol class="recos">
+    <li>
+      <strong>Test the DPM's left-side always-on link first.</strong>
+      <ul class="bullet-list">
+        <li>Dominant surface — test copy, placement, prominence.</li>
+        <li>Test whether "Request a Demo" → "Contact sales" swap is right, or a single consistent CTA wins.</li>
+        <li>Also test the right-side Premium-only "Request Demo" button — small surface, but ~17% sales-form submit rate.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Experiment on the &gt;100K customizer pathway.</strong>
+      <ul class="bullet-list">
+        <li>Surface a more prominent sales CTA when &gt;100K is selected.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Treat /pricing/premium-details/ as a high-intent niche.</strong>
+      <ul class="bullet-list">
+        <li>Investigate traffic source.</li>
+        <li>Route more high-intent traffic to it.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Fix or retire <code>[fs] Users clicked call sales</code>.</strong>
+      <ul class="bullet-list">
+        <li>0 fires in 365 days — it's misleading the team.</li>
+      </ul>
+    </li>
+  </ol>
+  </details>
+
+  <!-- DOWNSTREAM DETAIL -->
+  <details class="section">
+  <summary><h2 style="display:inline">Downstream /sales engagement (90d)</h2></summary>
+  <table>
+    <thead><tr><th>Signal</th><th class="num">Value</th></tr></thead>
+    <tbody>
+      <tr><td>ChiliPiper meetings booked (high-intent)</td><td class="num">354 unique prospects (~1.06% of visitors)</td></tr>
+      <tr><td>Time on page (median / P90)</td><td class="num">0.8s / 10.4s</td></tr>
+      <tr><td>Top next page: exit</td><td class="num">45% of pageviews</td></tr>
+      <tr><td>Top next page: back to /pricing/marketing</td><td class="num">17%</td></tr>
+      <tr><td>Top next page: re-visit /sales (hash navigation)</td><td class="num">14%</td></tr>
+      <tr><td>Top next page: signup</td><td class="num">3%</td></tr>
+    </tbody>
+  </table>
+  </details>
+
+  <!-- TOP REFERRERS TO /SALES -->
+  <details class="section">
+  <summary><h2 style="display:inline">Top referrers driving traffic to /sales (90d)</h2></summary>
+  <table>
+    <thead><tr>
+      <th>Referrer page</th>
+      <th class="num">Pageviews</th>
+      <th class="num">% of /sales traffic</th>
+      <th class="num">Form-submit rate</th>
+      <th>Top CTA driving to /sales</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>/pricing/marketing/</td><td class="num">27,624</td><td class="num">53.7%</td><td class="num">13.5%</td><td>singleplan · "Request a Demo" (13,161 unique clickers)</td></tr>
+      <tr><td>(direct / no referrer)</td><td class="num">11,425</td><td class="num">22.2%</td><td class="num">2.9%</td><td>—</td></tr>
+      <tr><td>mailchimp.com (other pages)</td><td class="num">3,601</td><td class="num">7.0%</td><td class="num">14.6%</td><td>mixed</td></tr>
+      <tr><td>/switch-to-mailchimp/</td><td class="num">2,768</td><td class="num">5.4%</td><td class="num">14.2%</td><td>p23hero · "Request a Demo" (1,343 unique clickers)</td></tr>
+      <tr><td>/pricing/premium-details/</td><td class="num">505</td><td class="num">1.0%</td><td class="num">6.5%</td><td>p23texthero · "Request a Demo" (170 unique clickers)</td></tr>
+    </tbody>
+  </table>
+  <ul class="bullet-list kicker" style="margin-top:8px">
+    <li><strong>/pricing/marketing/</strong> drives <strong>&gt;50%</strong> of all /sales traffic.</li>
+    <li>Its visitors submit the on-page sales form at <strong>~13.5%</strong> — ~5× the rate of direct traffic.</li>
+    <li>Premium-details and switch pages: smaller volume but high submit rates.</li>
+  </ul>
+  </details>
+
+  <!-- APPENDIX: FORM EVENT DETAILS -->
+  <details>
+    <summary>Appendix · form_start / form_submit definitions &amp; sales-form data</summary>
+    <h3 style="margin-top:14px">What GA4 actually counts</h3>
+    <ul>
+      <li><strong>form_start</strong> — fires the <em>first time a user interacts with any field</em> in a form during a session (GA4 enhanced measurement). Once per form per session. It is <em>not</em> a "form view" — the user has to type, click, or focus into a field.</li>
+      <li><strong>form_submit</strong> — fires when the browser's native <code>submit</code> event fires on the form. Triggered by clicking the submit button or hitting Enter. Doesn't guarantee server-side success or that the lead reached the sales team — only that the browser tried to submit.</li>
+    </ul>
+
+    <h3>The two lead-capture mechanisms on /sales</h3>
+    <ol>
+      <li><strong>"Request a Demo" CTA → ChiliPiper widget.</strong> Opens an embedded calendar; the user picks a slot. Tracked via the custom event <code>chili_piper_mtg_booked</code>. This is the high-intent action surfaced as the primary KPI above (354 unique prospects / 90d).</li>
+      <li><strong>On-page sales lead form.</strong> A standard HTML form (<code>form_id="contactForm"</code> / <code>form_name="prospective"</code>) that submits to the sales team for follow-up. Tracked via GA4's <code>form_start</code> / <code>form_submit</code>.</li>
+    </ol>
+
+    <h3>Sales-lead-form numbers (90d, /sales only, <code>form_name="prospective"</code>)</h3>
+    <table>
+      <thead><tr><th>Signal</th><th class="num">Value</th></tr></thead>
+      <tbody>
+        <tr><td>form_start (sales lead form)</td><td class="num">~7,200 unique users</td></tr>
+        <tr><td>form_submit (sales lead form)</td><td class="num">9,597 events · 5,264 unique users</td></tr>
+        <tr><td>Apparent start→submit rate</td><td class="num">~86%</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Caveats</h3>
+    <ul>
+      <li><strong>The 86% start→submit rate is suspiciously high</strong> and almost certainly an instrumentation artifact. Most likely cause: browser autofill bypasses the user-interaction trigger that fires <code>form_start</code>, so submits are counted without a corresponding start. <em>Don't trust the ratio at face value</em> — treat <code>form_start</code> on this form as under-counted.</li>
+      <li><strong><code>form_submit</code> ≠ MQL.</strong> No MOps qualification has been applied. As a back-of-envelope: 5,264 submits / 90d ≈ 1,750/mo. At ~40% MOps qualification and historical 10–20% MQL→Opp conversion, that's roughly <strong>70–140 sales opps/mo</strong> from the on-page form — but the authoritative number lives in Marketo / Salesforce, not GA4.</li>
+      <li>The KPI card showed <strong>ChiliPiper bookings (354)</strong> rather than form submits because ChiliPiper bookings are a calendar commitment from the prospect — a higher-confidence signal of sales intent than a form submit.</li>
+    </ul>
+  </details>
+
+  <!-- FULLSTORY REFERENCES -->
+  <details>
+    <summary>FullStory references</summary>
+    <ul>
+      <li><strong>Heatmap — user engagement (contacts dropdown / customizer):</strong> <a href="https://app.fullstory.com/ui/ZHBMT/heatmaps/create/1329664072?template=map-user-engagement&amp;elem=2&amp;filter=false&amp;completeSessions=false" target="_blank" rel="noopener">Open in FullStory ↗</a></li>
+      <li><strong>Sample user session (video):</strong> <a href="https://app.fullstory.com/ui/ZHBMT/session/1197020941896938739:(1197020941896938739!7854584878803945870(8508523827816342828(1:13963):8250701335780632461(1):2961714894483557301(1):378483742036583698(1))" target="_blank" rel="noopener">Open in FullStory ↗</a></li>
+    </ul>
+    <p style="color:var(--text-muted); font-size:.78rem; margin-top:8px">Both links require FullStory access (org <code>ZHBMT</code> / <code>mailchimp_production</code>).</p>
+  </details>
+
+  <!-- METHODOLOGY -->
+  <details>
+    <summary>Methodology &amp; sources</summary>
+    <ul>
+      <li>BQ source: <code>mc-business-intelligence.google_analytics.dim_ga4_events</code> with mandatory CQ bot anti-join, mailchimp.com hostname, last 90d.</li>
+      <li>/sales matched via locale-aware regex on <code>page_location</code>.</li>
+      <li>CTA attribution: <code>user_interaction</code> events with <code>interaction_destination_url</code> matching /sales. Reflects only instrumented CTA clicks.</li>
+      <li>FullStory: <code>mailchimp_production</code>, segment <code>58mf2mjmkx7n</code>, top-clicks metric, trailing 30d.</li>
+      <li>Module totals are summed across rows — a user clicking CTAs in two modules appears in both. Order of magnitude preserved.</li>
+      <li>Scripts: <code>01_explore_sales_visitors.py</code>, <code>02_attribution.py</code>, <code>03_premium_details.py</code>, <code>04_downstream.py</code>.</li>
+    </ul>
+  </details>
+
+</div>
+
+
+</body></html>
